@@ -1,4 +1,5 @@
 // URL to explain PHASER scene: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scene/
+// Doc standard code: https://docs.google.com/document/d/1fUqwT-g3VErUp3RqYHkFT2SL5HAxWaDaA9AbchGQGtQ/preview
 
 export default class HelloWorldScene extends Phaser.Scene {
   constructor() {
@@ -10,8 +11,7 @@ export default class HelloWorldScene extends Phaser.Scene {
   init() {
     // this is called before the scene is created
     // init variables
-    // take data passed from other scenes
-    // data object param {}
+    // take data passed from other scenes: "data" object from param
   }
 
   preload() {
@@ -42,9 +42,28 @@ export default class HelloWorldScene extends Phaser.Scene {
     logo.setCollideWorldBounds(true);
 
     emitter.startFollow(logo);
+
+    // add sky background
+
+    // add platforms static group
+
+    // add shapes group
+
+    // add sprite player
+
+    // create cursors
+
+    // add collider between player and platforms
+
+    // add collider between player and shapes
+
+    // add overlap between player and shapes
   }
 
   update() {
     // update game objects
+    // check if not game over or win
+    // update player movement
+    // update player jump
   }
 }
