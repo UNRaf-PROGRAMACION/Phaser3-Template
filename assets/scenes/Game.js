@@ -1,3 +1,6 @@
+// import ENUMS from "../utils.js";
+import { PLAYER_MOVEMENTS } from "../../utils.js";
+
 export default class Game extends Phaser.Scene {
   constructor() {
     // key of the scene
@@ -23,13 +26,12 @@ export default class Game extends Phaser.Scene {
 
   create() {
     // create game objects
-    // agregado sin fisicas
     // add sky background
     this.add.image(400, 300, "sky").setScale(0.555);
 
     // agregado con fisicas
     // add sprite player
-    this.player = this.physics.add.sprite(100, 500, "player");
+    this.player = this.physics.add.sprite(400, 500, "player");
 
     // add platforms static group
     this.platformsGroup = this.physics.add.staticGroup();
@@ -55,13 +57,26 @@ export default class Game extends Phaser.Scene {
     );
 
     // create cursors
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update() {
     // update game objects
     // check if not game over or win
-    // update player movement
+
+    // update player left right movement
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-PLAYER_MOVEMENTS.x);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(PLAYER_MOVEMENTS.x);
+    } else {
+      this.player.setVelocityX(0);
+    }
+
     // update player jump
+    if (this.cursors.up.isDown && this.player.body.touching.down) {
+      this.player.setVelocityY(-PLAYER_MOVEMENTS.y);
+    }
   }
 
   collectShape(jugador, figuraChocada) {
