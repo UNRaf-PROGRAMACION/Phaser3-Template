@@ -1,8 +1,15 @@
 // create enum's
-
 const PLAYER_MOVEMENTS = {
   x: 160,
   y: 300,
 };
 
-export { PLAYER_MOVEMENTS };
+const SHAPE_DELAY = 3000;
+
+const TRIANGULO = "triangulo";
+const CUADRADO = "cuadrado";
+const ROMBO = "rombo";
+
+const SHAPES = [TRIANGULO, CUADRADO, ROMBO];
+
+export { PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO };

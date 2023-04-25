@@ -1,5 +1,12 @@
 // import ENUMS from "../utils.js";
-import { PLAYER_MOVEMENTS } from "../../utils.js";
+import {
+  PLAYER_MOVEMENTS,
+  SHAPE_DELAY,
+  SHAPES,
+  TRIANGULO,
+  ROMBO,
+  CUADRADO,
+} from "../../utils.js";
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -21,7 +28,9 @@ export default class Game extends Phaser.Scene {
     this.load.image("sky", "./assets/images/Cielo.png");
     this.load.image("platform", "./assets/images/platform.png");
     this.load.image("player", "./assets/images/Ninja.png");
-    this.load.image("triangulo", "./assets/images/Triangulo.png");
+    this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
+    this.load.image(ROMBO, "./assets/images/Rombo.png");
+    this.load.image(CUADRADO, "./assets/images/Cuadrado.png");
   }
 
   create() {
@@ -39,7 +48,6 @@ export default class Game extends Phaser.Scene {
 
     // add shapes group
     this.shapesGroup = this.physics.add.group();
-    this.shapesGroup.create(100, 0, "triangulo");
 
     // add collider between player and platforms
     this.physics.add.collider(this.player, this.platformsGroup);
@@ -58,6 +66,14 @@ export default class Game extends Phaser.Scene {
 
     // create cursors
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // create event to add shapes
+    this.time.addEvent({
+      delay: SHAPE_DELAY,
+      callback: this.addShape,
+      callbackScope: this,
+      loop: true,
+    });
   }
 
   update() {
@@ -83,5 +99,18 @@ export default class Game extends Phaser.Scene {
     // remove shape from screen
     console.log("figura recolectada");
     figuraChocada.disableBody(true, true);
+  }
+
+  addShape() {
+    // get random shape
+    const randomShape = Phaser.Math.RND.pick(SHAPES);
+
+    // get random position x
+    const randomX = Phaser.Math.RND.between(0, 800);
+
+    // add shape to screen
+    this.shapesGroup.create(randomX, 0, randomShape);
+
+    console.log("shape is added", randomX, randomShape);
   }
 }
