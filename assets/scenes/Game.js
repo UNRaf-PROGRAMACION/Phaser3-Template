@@ -21,6 +21,9 @@ export default class Game extends Phaser.Scene {
       ["Cuadrado"]: { count: 0, score: 20 },
       ["Rombo"]: { count: 0, score: 30 },
     };
+
+    this.isWinner = false;
+    this.isGameOver = false;
   }
 
   preload() {
@@ -76,15 +79,23 @@ export default class Game extends Phaser.Scene {
     });
 
     //add text score
-    this.scoreText = this.add.text(16, 16, "Score: 0", {
+    this.scoreText = this.add.text(16, 16, "T: 0 / C: 0 / R: 0", {
       fontSize: "20px",
       fill: "#1af",
     });
   }
 
   update() {
+    // check if game over or win
+    if (this.isWinner) {
+      this.scene.start("winner");
+    }
+
+    if (this.isGameOver) {
+      this.scene.start("gameOver");
+    }
+
     // update game objects
-    // check if not game over or win
 
     // update player left right movement
     if (this.cursors.left.isDown) {
@@ -103,13 +114,35 @@ export default class Game extends Phaser.Scene {
 
   collectShape(jugador, figuraChocada) {
     // remove shape from screen
-    console.log("figura recolectada");
-    figuraChocada.disableBody(true, true);
-
     const shapeName = figuraChocada.texture.key;
+    console.log("figura recolectada: " + shapeName);
+    figuraChocada.disableBody(true, true);
     this.shapesRecolected[shapeName].count++;
+    // update score text
+    this.scoreText.setText(
+      "T: " +
+        this.shapesRecolected[TRIANGULO].count +
+        " / C: " +
+        this.shapesRecolected[CUADRADO].count +
+        " / R: " +
+        this.shapesRecolected[ROMBO].count
+    );
 
-    console.log(this.shapesRecolected);
+    // con template string
+    //this.scoreText.setText(
+    //  `T: ${this.shapesRecolected[TRIANGULO].count} / C: ${this.shapesRecolected[CUADRADO].count} / R: ${this.shapesRecolected[ROMBO].count}`
+    //);
+
+    // check if winner
+    // take two of each shape
+
+    if (
+      this.shapesRecolected[TRIANGULO].count >= 2 &&
+      this.shapesRecolected[CUADRADO].count >= 2 &&
+      this.shapesRecolected[ROMBO].count >= 2
+    ) {
+      this.isWinner = true;
+    }
   }
 
   addShape() {
