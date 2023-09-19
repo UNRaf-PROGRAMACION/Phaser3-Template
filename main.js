@@ -1,4 +1,4 @@
-import HelloWorldScene from "./assets/scenes/HelloWorldScene.js";
+import HelloWorldScene from "./scenes/HelloWorldScene.js";
 
 // Create a new Phaser config object
 const config = {
