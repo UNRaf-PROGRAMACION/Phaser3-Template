@@ -8,7 +8,7 @@ Contiene configuración inicial y buenas prácticas de estructuras de carpetas.
 
 No te olvides de customizarlo a tus necesidades.
 
-1. Cuando lo utilices como Template desde el botón de GitHub, no olvides cambiar el nombre del repositorio acorde a tu proyecto en wl wizard de creación de repositorios.
+1. Cuando lo utilices como Template desde el botón de GitHub, no olvides cambiar el nombre del repositorio acorde a tu proyecto en el wizard de creación de repositorios.
 1. Luego de clonar el repositorio en tu maquina local. Deberias:
    1. Actualizar la version de Phaser a la version más actualizada en el archivo `index.html`. Ver la web: https://phaser.io/download/stable
    1. También, dentro del `index.html` modificar el titulo de la pagina. Por ejemplo: `<title>My Game</title>`
