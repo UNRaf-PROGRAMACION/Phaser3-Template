@@ -78,6 +78,8 @@ export default class Game extends Phaser.Scene {
     bombs = this.physics.add.group();
 
     this.score = 0;
+    this.gameOver = false;
+
     this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontSize: "32px",
       fill: "#000",
@@ -130,5 +132,15 @@ export default class Game extends Phaser.Scene {
 
     this.score += 10;
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  hitBomb(player, bomb) {
+    this.physics.pause();
+
+    this.player.setTint(0xff0000);
+
+    this.player.anims.play("turn");
+
+    this.gameOver = true;
   }
 }
