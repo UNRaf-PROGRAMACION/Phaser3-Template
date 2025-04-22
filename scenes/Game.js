@@ -30,7 +30,7 @@ export default class Game extends Phaser.Scene {
     // create game objects
     this.add.image(400, 300, "sky");
 
-    let platforms = this.physics.add.staticGroup();
+    this.platforms = this.physics.add.staticGroup();
 
     platforms.create(400, 568, "ground").setScale(2).refreshBody();
 
@@ -38,7 +38,7 @@ export default class Game extends Phaser.Scene {
     platforms.create(50, 250, "ground");
     platforms.create(750, 220, "ground");
 
-    let player = this.physics.add.sprite(100, 450, "dude");
+    this.player = this.physics.add.sprite(100, 450, "dude");
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -64,6 +64,8 @@ export default class Game extends Phaser.Scene {
     });
 
     this.physics.add.collider(player, platforms);
+
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update() {
