@@ -75,6 +75,8 @@ export default class Game extends Phaser.Scene {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
     });
 
+    bombs = this.physics.add.group();
+
     this.score = 0;
     this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontSize: "32px",
@@ -89,6 +91,14 @@ export default class Game extends Phaser.Scene {
       this.player,
       this.stars,
       this.collectStar,
+      null,
+      this
+    );
+
+    this.physics.add.collider(
+      this.player,
+      this.bombs,
+      this.hitBomb,
       null,
       this
     );
