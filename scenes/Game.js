@@ -78,6 +78,14 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.player, this.platforms);
 
     this.physics.add.collider(this.stars, this.platforms);
+
+    this.physics.add.overlap(
+      this.player,
+      this.stars,
+      this.collectStar,
+      null,
+      this
+    );
   }
 
   update() {
@@ -99,5 +107,9 @@ export default class Game extends Phaser.Scene {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
     }
+  }
+
+  collectStar(player, star) {
+    star.disableBody(true, true);
   }
 }
