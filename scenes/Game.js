@@ -28,6 +28,7 @@ export default class Game extends Phaser.Scene {
 
   create() {
     // create game objects
+    this.add.image(400, 300, "sky");
   }
 
   update() {
