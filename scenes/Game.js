@@ -64,6 +64,7 @@ export default class Game extends Phaser.Scene {
     });
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
     this.stars = this.physics.add.group({
       key: "star",
@@ -83,6 +84,33 @@ export default class Game extends Phaser.Scene {
     this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontSize: "32px",
       fill: "#000",
+    });
+
+    this.gameOverText = this.add.text(400, 300, "GAME OVER", {
+      fontSize: "64px",
+      fill: "#000",
+    });
+    this.gameOverText.setOrigin(0.5, 0.5);
+    this.gameOverText.setVisible(false);
+
+    this.timeText = this.add.text(700, 16, "Time: 30", {
+      fontSize: "32px",
+      fill: "#000",
+    });
+    this.timeText.setOrigin(0.5, 0.5);
+
+    this.timeLeft = 30;
+
+    this.timer = this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        this.timeLeft--;
+        this.timeText.setText(`Time: ${this.timeLeft}`);
+        if (this.timeLeft <= 0) {
+          this.gameOver = true;
+        }
+      },
+      loop: true,
     });
 
     this.physics.add.collider(this.player, this.platforms);
@@ -124,6 +152,24 @@ export default class Game extends Phaser.Scene {
 
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.player.setVelocityY(-330);
+    }
+
+    if (this.keyR.isDown) {
+      console.log("this.keyR.isDown");
+      this.scene.restart();
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
+      console.log("Phaser.Input.Keyboard.JustDown(this.keyR)");
+      this.scene.restart();
+    }
+
+    if (this.gameOver) {
+      this.gameOverText.setVisible(true);
+      this.player.setVelocity(0, 0);
+      this.player.anims.play("turn");
+
+      this.timer.paused = true;
     }
   }
 
