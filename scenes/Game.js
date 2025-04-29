@@ -12,6 +12,10 @@ export default class Game extends Phaser.Scene {
     // init variables
     // take data passed from other scenes
     // data object param {}
+
+    this.score = 0;
+    this.gameOver = false;
+    this.timeLeft = 10;
   }
 
   preload() {
@@ -64,7 +68,7 @@ export default class Game extends Phaser.Scene {
     });
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    // this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
     this.stars = this.physics.add.group({
       key: "star",
@@ -78,43 +82,41 @@ export default class Game extends Phaser.Scene {
 
     this.bombs = this.physics.add.group();
 
-    this.score = 0;
-    this.gameOver = false;
-
     this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
       fontSize: "32px",
       fill: "#000",
     });
 
-    // this.gameOverText = this.add.text(400, 300, "GAME OVER", {
-    //   fontSize: "64px",
-    //   fill: "#000",
-    // });
+    this.gameOverText = this.add.text(400, 300, "GAME OVER", {
+      fontSize: "64px",
+      fill: "#000",
+    });
 
-    // this.gameOverText.setOrigin(0.5, 0.5);
+    this.gameOverText.setOrigin(0.5, 0.5);
 
-    // this.gameOverText.setVisible(false);
+    this.gameOverText.setVisible(false);
 
-    // this.timeText = this.add.text(700, 16, "Time: 30", {
-    //   fontSize: "32px",
-    //   fill: "#000",
-    // });
+    this.timeText = this.add.text(700, 16, `Time: ${this.timeLeft}`, {
+      fontSize: "32px",
+      fill: "#000",
+    });
 
-    // this.timeText.setOrigin(0.5, 0.5);
+    this.timeText.setOrigin(0.5, 0.5);
 
-    // this.timeLeft = 30;
+    this.timer = this.time.addEvent({
+      delay: 1000, // definido en ms
+      //callback: this.handleTimerEvent,
+      callback: () => {
+        this.timeLeft -= 1;
+        this.timeText.setText(`Time: ${this.timeLeft}`);
 
-    // this.timer = this.time.addEvent({
-    //   delay: 1000,
-    //   callback: () => {
-    //     this.timeLeft--;
-    //     this.timeText.setText(`Time: ${this.timeLeft}`);
-    //     if (this.timeLeft <= 0) {
-    //       this.gameOver = true;
-    //     }
-    //   },
-    //   loop: true,
-    // });
+        if (this.timeLeft <= 0) {
+          this.timer.remove(false);
+          this.gameOver = true;
+        }
+      },
+      loop: true,
+    });
 
     this.physics.add.collider(this.player, this.platforms);
 
@@ -158,22 +160,23 @@ export default class Game extends Phaser.Scene {
     }
 
     // if (this.keyR.isDown) {
-    //   console.log("this.keyR.isDown");
+    //   console.log("keyR isDown");
     //   this.scene.restart();
     // }
 
-    // if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
-    //   console.log("Phaser.Input.Keyboard.JustDown(this.keyR)");
-    //   this.scene.restart();
-    // }
+    if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
+      console.log("Phaser.Input.Keyboard.JustDown(this.keyR)");
+      this.scene.restart();
+      //this.scene.start("game");
+    }
 
-    // if (this.gameOver) {
-    //   this.gameOverText.setVisible(true);
-    //   this.player.setVelocity(0, 0);
-    //   this.player.anims.play("turn");
+    if (this.gameOver) {
+      this.gameOverText.setVisible(true);
+      this.player.setVelocity(0, 0);
+      this.player.anims.play("turn");
 
-    //   this.timer.paused = true;
-    // }
+      //this.timer.paused = true;
+    }
   }
 
   collectStar(player, star) {
@@ -209,5 +212,15 @@ export default class Game extends Phaser.Scene {
     this.player.anims.play("turn");
 
     this.gameOver = true;
+  }
+
+  handleTimerEvent() {
+    this.timeLeft -= 1;
+    this.timeText.setText(`Time: ${this.timeLeft}`);
+
+    if (this.timeLeft <= 0) {
+      this.timer.remove(false);
+      this.gameOver = true;
+    }
   }
 }
