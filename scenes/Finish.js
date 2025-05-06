@@ -9,9 +9,7 @@ export default class Finish extends Phaser.Scene {
     this.state = data.state || "";
   }
 
-  preload() {
-    this.load.image("sky", "./public/assets/sky.png");
-  }
+  preload() {}
 
   create() {
     this.add.image(400, 300, "sky");
@@ -20,6 +18,12 @@ export default class Finish extends Phaser.Scene {
       .setOrigin(0.5);
     this.add
       .text(400, 300, `Points: ${this.score}`, {
+        fontSize: "32px",
+        fill: "#000",
+      })
+      .setOrigin(0.5);
+    this.add
+      .text(400, 350, `Time: ${this.timeLeft}`, {
         fontSize: "32px",
         fill: "#000",
       })
