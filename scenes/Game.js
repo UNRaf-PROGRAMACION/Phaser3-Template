@@ -105,14 +105,17 @@ export default class Game extends Phaser.Scene {
 
     this.timer = this.time.addEvent({
       delay: 1000, // definido en ms
-      //callback: this.handleTimerEvent,
       callback: () => {
         this.timeLeft -= 1;
         this.timeText.setText(`Time: ${this.timeLeft}`);
 
         if (this.timeLeft <= 0) {
           this.timer.remove(false);
-          this.gameOver = true;
+          this.scene.start("finish", {
+            score: this.score,
+            timeLeft: this.timeLeft,
+            state: "Perdiste",
+          });
         }
       },
       loop: true,
@@ -159,23 +162,15 @@ export default class Game extends Phaser.Scene {
       this.player.setVelocityY(-330);
     }
 
-    // if (this.keyR.isDown) {
-    //   console.log("keyR isDown");
-    //   this.scene.restart();
-    // }
-
     if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
       console.log("Phaser.Input.Keyboard.JustDown(this.keyR)");
       this.scene.restart();
-      //this.scene.start("game");
     }
 
     if (this.gameOver) {
       this.gameOverText.setVisible(true);
       this.player.setVelocity(0, 0);
       this.player.anims.play("turn");
-
-      //this.timer.paused = true;
     }
   }
 
@@ -211,7 +206,11 @@ export default class Game extends Phaser.Scene {
 
     this.player.anims.play("turn");
 
-    this.gameOver = true;
+    this.scene.start("finish", {
+      score: this.score,
+      timeLeft: this.timeLeft,
+      state: "Perdiste",
+    });
   }
 
   handleTimerEvent() {
